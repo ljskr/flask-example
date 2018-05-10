@@ -1,0 +1,9 @@
+*.log
+*.pyc
+log/
+node_modules/
+package-lock.json
+webapp/static/dist/
+webapp/templates_dist/
+*/static/.webassets-cache/
+*/static/gen/
