@@ -1,11 +1,10 @@
 // 引入gulp和gulp插件
 var gulp = require('gulp'),
-    runSequence = require('run-sequence'),
     rev = require('gulp-rev'),
     revCollector = require('gulp-rev-collector'),
-    cleanCss = require('gulp-clean-css')
-    uglify = require('gulp-uglify')
-    del = require('del');
+    cleanCss = require('gulp-clean-css'),
+    uglify = require('gulp-uglify'),
+    promisedDel = require('promised-del');
 
 // 定义css、js文件路径
 var cssPath = './webapp/static/css/**/*.css',
@@ -18,10 +17,10 @@ var cssPath = './webapp/static/css/**/*.css',
 
 // 清除文件
 gulp.task('clean', function(){
-    del.sync([
-        './webapp/static/dist',
-        './webapp/templates_dist'
-    ]);
+    return promisedDel([
+            './webapp/static/dist',
+            './webapp/templates_dist'
+        ]);
 });
 
 // 处理 CSS 文件
@@ -56,16 +55,13 @@ gulp.task('revHtml', function () {
             .pipe(gulp.dest('./webapp/templates_dist'));  // 保存替换后的html文件
 });
 
-// 主构建任务
-gulp.task('dev', function (done) {
-    condition = false;
-    runSequence(
-        ['clean'],
-        ['revCss'],
-        ['revJs'],
-        ['revHtml'],
-        //['watch'],
-        done);
-});
-
-gulp.task('default', ['dev']);
+gulp.task('default',
+    gulp.series(
+        'clean',
+        'revCss',
+        'revJs',
+        'revHtml',
+        function(done) {
+            done();
+    })
+);

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+# Author: ljskryj@163.com
+# Date: 2018-04-16
 
 import logging
 from logging.config import dictConfig
@@ -13,9 +15,6 @@ logging.config.dictConfig(yaml.load(open(log_config_file)))
 
 # 创建 app
 app = webapp.create_app(config)
-
-logger = logging.getLogger()
-logger.info("app created!")
 
 if __name__ == '__main__':
     app.run(host=config.TEST_HOST, port=config.TEST_PORT)

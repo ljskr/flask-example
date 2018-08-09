@@ -99,7 +99,7 @@ server {
     # 让 nginx 处理静态资源
     location /static/ {
         # 这里配置 webapp 目录的绝对路径
-        root /path/to/application/webapp;
+        alias /path/to/application/webapp/static;
     }
 
     location /favicon.ico {
@@ -112,9 +112,11 @@ server {
         include uwsgi_params;
         # 此处的 socket 路径需要跟 uwsgi 中定义的一致
         uwsgi_pass unix:///tmp/web-flask-example.socket;
+        # uwsgi_pass 127.0.0.1:8080;
     }
 }
 ```
+**注意**： fedora 之类的发行版可能会限制 socket 文件的访问，导致 nginx 无法读取 /tmp/*.socket 文件。症状表现为返回 502 错误，error 日志中报找不到文件错误。若需要解决该问题，其中一个方法是设置 selinux ，另一个方法就是不使用 socket 进行通信，改为使用端口监听。
 
 ## 5. 静态资源压缩发布（生产打包，高级，选做）
 
