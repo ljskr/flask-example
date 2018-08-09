@@ -133,6 +133,8 @@ npm install
 安装完毕后，使用 gulp 命令进行静态资源预处理：
 ```
 gulp
+# 或者运行
+# ./node_modules/gulp/bin/gulp.js
 ```
 
 gulp 的任务定义在 `gulpfile.js` 文件中。
